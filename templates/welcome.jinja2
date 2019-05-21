@@ -1,0 +1,24 @@
+  
+{% extends "logged_in.jinja2" %}
+
+{% block body %}
+
+<div class="container">
+    <h1>Welcome {{ username }}</h1>
+    <p>Seach for a book below</p>
+</div>
+<div class="container search"> 
+    <form class="form-control col-5" method="post" action="/results">
+            
+            <label for="isbn">ISBN:</label>
+            <input type="text" placeholder="Enter an ISBN here" class="form-control" maxlength=10 name="isbn">
+            <label for="author">Author:</label>
+            <input type="text" placeholder="Enter an Author here" class="form-control" name="author">
+            <label for="title">Title:</label>
+            <input type="text" placeholder="Enter a Title here" class="form-control" name="title">
+            <button type="submit" class="btn btn-primary" action="/results" value="submit">Submit</button>
+        </div>
+    </form>
+
+
+{% endblock %}

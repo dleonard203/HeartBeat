@@ -1,0 +1,25 @@
+
+{% extends 'template.jinja2' %}
+
+{% block header %}
+
+
+
+<div class="container">
+    <h2>You're seconds away from data-driven insights...</h2>
+    <p>Just fill out some info below</p>
+    <p class="error">{{ err_msg }}</p> 
+</div>
+<form method="post">
+        <div class="form-group container login">
+            <label for="username">Username</label>
+            <input type="text" placeholder="Username" class="form-control" maxlength=20 name="username" required>
+            <label for="password">Password</label>
+            <input type="password" placeholder="Password" class="form-control" maxlength=50 name="password" required>
+            <label for="email"><i>Optional: </i>Email</label>
+            <input type="text" placeholder="Email" class="form-control" name="email">
+            <button type="submit", class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,11 @@
+
+{% extends 'template.jinja2' %}
+
+{% block header %}
+<div class="container">
+    <h1>Welcome, {{ username }}!</h1>
+    <p>We look forward to helping you unlock insights 😃</p>
+    <a href="{{ url_for('home') }}"><button class="btn btn-primary">Click here to go back home</button></a>
+</div>
+
+{% endblock %}

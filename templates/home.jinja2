@@ -1,0 +1,27 @@
+{% extends 'template.jinja2' %}
+
+
+{% block body %}
+
+
+<div class="container error">
+    <p>{{ msg }}</p>
+</div>
+
+<form method="post">
+    <div class="form-group container login">
+        <label for="username">Username</label>
+        <input type="text" placeholder="Username" class="form-control" maxlength=12 name="username">
+        <label for="password">Password</label>
+        <input type="password" placeholder="Password" class="form-control" name="password">
+        <input type="submit", class="btn btn-primary" action="/welcome"></button>
+    </div>
+</form>
+
+<div class="register container">
+    <p>No account yet? Sign up for a FREE account below!</p>
+    <button class="btn btn-primary reg-button"> <a href="{{ url_for('register') }}" class="reg-button">Register</a></button>
+</div>
+
+
+{% endblock %}

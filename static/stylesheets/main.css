@@ -1,0 +1,22 @@
+body {
+    background-color: rgb(255, 159, 159);
+    font-size: 14;
+}
+
+.top-nav {
+    background-color:white;
+    width: 100%;
+}
+
+.logo {
+    width: 5rem;
+}
+
+a.reg-button {
+    color: white;
+}
+
+.error {
+    color: red;
+    font-size: 20px;
+}

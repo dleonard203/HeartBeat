@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/main.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/icon.png') }}">
+    <title>HeartBeat</title>
+</head>
+
+
+<div class="top-nav d-flex justify-content-center">
+    <div class="row-4">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo">
+            Welcome to HeartBeat, your one stop shop for health monitoring
+    </div>
+</div>
+
+{% block header %}
+
+{% endblock %}
+<body>
+{% block body %}
+
+{% endblock %}
+    
+</body>
+</html>
