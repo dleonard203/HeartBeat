@@ -20,3 +20,74 @@ a.reg-button {
     color: red;
     font-size: 20px;
 }
+
+a#logout, a#home{
+    color: white;
+}
+
+
+
+
+.btn-group button {
+    margin-left:10%;
+    margin-right:10%;
+    width:10%;
+  }
+
+#edit-btn {
+    padding-top: 3rem;
+}
+
+
+.chart-row {
+    padding-top: 4rem;
+}
+
+.recent-stats {
+    margin-top: 3rem;
+}
+
+
+.left-chart {
+    color: rgb(124, 96, 44);
+    width:49%;
+    padding-right:2%;
+}
+
+.right-chart {
+    color: rgb(124, 96, 44);
+    width:49%;
+}
+
+.full-chart {
+    width:100%;
+}
+
+
+
+label {
+    display:block;
+    padding-top:1rem;
+}
+
+.form-group button {
+    margin-top:1rem;
+}
+
+.success {
+    font-size:24px;
+    color:rgb(29, 90, 42);
+}
+
+.failure {
+    font-size:24px;
+    color:rgb(141, 41, 41);
+}
+
+.edit-btn {
+    margin-bottom:3rem;
+}
+
+.edit-record {
+    margin:2rem 0rem 2rem 0rem;
+}
