@@ -33,4 +33,3 @@ due to an irregularity).
 
 5.) Connect to localhost:5000 in your favorite web browser (compatability tested in Chrome only) to start using!
 
-# Features
