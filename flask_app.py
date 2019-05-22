@@ -124,22 +124,34 @@ def edit():
 @assert_login()
 def edit_hourly():
     if request.method == "GET":
-        records = Hourly.query.filter(Hourly.user_id == session['user_id']).order_by(desc(Hourly.timestamp))
-        return render_template('edit_hourly.jinja2', records=records)
+        if 'messages' in session:
+            msg = session['messages']
+            session.pop('messages')
+        else:
+            msg = ''
+        records = Hourly.query.filter(Hourly.user_id == session['user_id']).order_by(desc(Hourly.timestamp)).all()
+        return render_template('edit_hourly.jinja2', records=records, msg = msg)
     else:
         if "edit" in request.form:
             return redirect(url_for('edit_hourly_record', id=request.form.get("edit")))
+        elif "delete" in request.form:
+            session['messages'] = delete_hourly_record(request.form.get("delete"), session['user_id'])
+            return redirect(url_for('edit_hourly'))
+
 
 
 @app.route('/edit/daily/', methods=["GET", "POST"])
 @assert_login()
 def edit_daily():
     if request.method == "GET":
-        records = Daily.query.filter(Daily.user_id == session['user_id']).order_by(desc(Daily.timestamp))
+        records = Daily.query.filter(Daily.user_id == session['user_id']).order_by(desc(Daily.timestamp)).all()
         return render_template('edit_daily.jinja2', records=records)
     else:
         if "edit" in request.form:
             return redirect(url_for('edit_daily_record', id=request.form.get("edit")))
+        elif "delete" in request.form:
+            session['messages'] = delete_daily_record(request.form.get("delete"), session['user_id'])
+            return redirect(url_for('edit_daily'))
 
 @app.route('/edit/hourly/<int:id>/', methods = ["GET", "POST"])
 @assert_login()
@@ -161,7 +173,7 @@ def edit_hourly_record(id):
         if isinstance(result, str):
             session['messages'] = result
         else:
-            session['messages'] = f"Successfully edited a daily entry for {request.form.get('day')} {request.form.get('time')}!<br>\
+            session['messages'] = f"Successfully edited a blood sugar entry for {request.form.get('day')} {request.form.get('time')}!<br>\
                 Changes are: <br>"
             for key in result:
                 if key == 'meal status':
@@ -174,12 +186,32 @@ def edit_hourly_record(id):
         return redirect(url_for('edit_hourly_record', id=id))
 
 
-@app.route('/edit/daily/<int:id>')
+@app.route('/edit/daily/<int:id>', methods=["GET", "POST"])
 @assert_login()
 def edit_daily_record(id):
     record = Daily.query.filter(Daily.id == id).first()
-    if record is None:
-        return render_template('FILL ME IN')
+    if request.method == "GET":
+        if record is None:
+            return render_template('edit_daily_record.jinja2', msg="No record found", record="", cls="failure")
+        else:
+            if 'messages' in session:
+                message = session['messages']
+                session.pop('messages')
+            else:
+                message = ''
+            msg_class = "failure" if message.find("Successfully") == -1 else "success"
+            return render_template('edit_daily_record.jinja2', record=record, message=message, cls=msg_class)
+    #posted an update
+    else:
+        updated_form = request.form
+        result = handle_daily_record_update(request.form, session['user_id'], id)
+        if isinstance(result, str):
+            session['messages'] = result
+        else:
+            session['messages'] = f"Successfully edited a daily entry for {request.form.get('day')}!<br>\
+                Updated fields are shown below"
+        return redirect(url_for('edit_daily_record', id=id))
+
 
 @app.route('/enter/daily/', methods=["GET", "POST"])
 @assert_login()
