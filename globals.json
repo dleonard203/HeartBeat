@@ -1,0 +1,10 @@
+{
+    "source": "https://www.diabetesselfmanagement.com/blog/what-is-a-normal-blood-sugar-level/",
+    "context": "all of these are blood sugar levels. pre = pre meal, post = post meal. critical = absolute min or max",
+    "critical_min": 56,
+    "min_pre": 80,
+    "min_post": 126,
+    "max_pre": 130,
+    "max_post": 180,
+    "critical_max": 200
+}
