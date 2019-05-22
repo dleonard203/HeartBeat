@@ -1,0 +1,19 @@
+  
+{% extends "logged_in.jinja2" %}
+
+{% block body %}
+
+<div class="container">
+    <form method="post">
+        <h3>Edit data that is entered daily</h3>
+        <p>This data consists of weight, steps walked, and calories consumed</p>
+        <button class="btn btn-primary edit-btn" name="daily" value="daily">Daily Edits</button>
+
+        <h3>Edit data associated with blood sugar readings</h3>
+        <p>This data includes the blood sugar rating, notes/symptoms, and if the reading was before or after a meal</p>
+        <button class="btn btn-primary" name="hourly" value="hourly">Blood Sugar Edits</button>
+    </form>
+</div>
+
+
+{% endblock %}

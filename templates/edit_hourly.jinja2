@@ -1,0 +1,28 @@
+  
+{% extends "logged_in.jinja2" %}
+
+{% block body %}
+
+<div class="container">
+    {% for record in records %}
+    <div class="card edit-record">
+        <div class="card-header"><strong>Time:</strong> {{ record.timestamp }}</div>
+        <div class="card-body">
+            <p>Blood Sugar: {{ record.blood_sugar }}</p>
+            <p>Notes: {{ record.symptoms }}</p>
+            <div class="row justify-content-between">
+                <form method="post">
+                    <button class="btn btn-primary" type="submit" name="edit" value="{{ record.id }}">Edit Record</button>
+                </form>
+                <form method="post">
+                    <button class="btn btn-danger" name="delete" type="submit" value="{{ record.id }}">Delete Record</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    {% endfor %}
+</div>
+
+{% endblock %}

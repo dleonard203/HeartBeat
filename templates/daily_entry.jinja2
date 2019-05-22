@@ -1,0 +1,34 @@
+{% extends "logged_in.jinja2" %}
+
+{% block body %}
+
+
+
+<div class="container">
+    <div class="{{ message_class }}">
+        {{ message }}
+    </div>
+    <h2>Please fill out the below fields</h2>
+    <form method="post" class="block-display">
+        <div class="form-group">
+            <label for="day">Day of measurement:</label>
+            <input type="date" name="day" id="day" value="{{ cur_day }}" required>
+
+            <label for="weight">Weight in lbs (integer, optional):</label>
+            <input type="number" name="weight" id="weight" min=0 max=1000>
+
+            <label for="steps">Steps taken (integer, optional):</label>
+            <input type="number" name="steps" id="steps" min=0 max=100000>
+
+            <label for="calories">Calories consumed (integer, optional):</label>
+            <input type="number" name="calories" id="calories" min=0 max=100000>
+            <br>
+            <button type="submit", class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,46 @@
+  
+{% extends "logged_in.jinja2" %}
+
+{% block body %}
+
+<div class="container">
+    <div class="{{ cls }}">
+        {{ msg }}
+    </div>
+
+
+    {% if record != "" %}
+    <h2>Please ammend any field that seems inaccurate</h2>
+    <form method="post">
+
+        <label for="day">Day of measurement:</label>
+        <input type="date" name="day" id="day" value="{{ record.timestamp.split(' ')[0] }}" required>
+
+        <label for="time">Time of day for measurement (HH:MM:SS military time format):</label>
+        <input type="text" name="time" id="time" value="{{ record.timestamp.split(' ')[1] }}" required>
+
+        <label for="blood_sugar">Blood sugar level (integer, required)</label>
+        <input type="number" name="blood_sugar" value="{{ record.blood_sugar }}" id="blood_sugar" min=0 max=500 required>
+
+        <label for="meal_status">Measurement taken before or after meal:</label>
+        {% if record.meal_status == 0 %}
+            <input type="radio" name="meal_status" value="before" checked="checked" required>Before
+            <input type="radio" name="meal_status" value="after" required>After
+        {% else %}
+            <input type="radio" name="meal_status" value="before" required>Before
+            <input type="radio" name="meal_status" value="after" checked="checked" required>After
+        {% endif %}
+        
+        <label for="notes">Notes about the measurement</label>
+        {% if record.symptoms == "" %}
+            <textarea rows="4" cols="60" name="notes" id="notes" placeholder="Hours since last meal, symptoms, etc."></textarea>
+        {% else %}
+            <textarea rows="4" cols="60" name="notes" id="notes">{{ record.symptoms }}</textarea>
+        {% endif %}
+        <br>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    {% endif %}
+
+{% endblock %}

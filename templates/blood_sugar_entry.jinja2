@@ -1,0 +1,39 @@
+{% extends "logged_in.jinja2" %}
+
+{% block body %}
+
+
+
+<div class="container">
+    <div class="{{ message_class }}">
+        {{ message }}
+    </div>
+
+    <h2>Please fill out the below fields</h2>
+    <form method="post" class="block-display">
+        <div class="form-group">
+            <label for="day">Day of measurement:</label>
+            <input type="date" name="day" id="day" value="{{ cur_day }}" required>
+
+            <label for="time">Time of day for measurement (HH:MM:SS military time format):</label>
+            <input type="text" name="time" id="time" value="{{ cur_time }}" required>
+
+            <label for="blood_sugar">Blood sugar level (integer, required)</label>
+            <input type="number" name="blood_sugar" id="blood_sugar" min=0 max=500 required>
+
+            <label for="meal_status">Measurement taken before or after meal:</label>
+            <input type="radio" name="meal_status" value="before" required>Before
+            <input type="radio" name="meal_status" value="after" required>After
+
+            <label for="notes">Notes about the measurement</label>
+            <textarea rows="4" cols="60" name="notes" id="notes" placeholder="Hours since last meal, symptoms, etc."></textarea>
+            <br>
+            <button type="submit", class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+
+
+
+{% endblock %}
