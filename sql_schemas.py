@@ -15,10 +15,6 @@ db = scoped_session(sessionmaker(bind=engine, autocommit=False, autoflush=False)
 Base = declarative_base()
 
 
-
-#db = SQLAlchemy()
-
-
 class Users(Base):
         __tablename__ = "users"
         id = Column(Integer, primary_key=True)
@@ -31,8 +27,9 @@ class Daily(Base):
         id = Column(Integer, primary_key=True)
         user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
         timestamp = Column(String, nullable = False)
-        weight = Column(Integer, nullable=False)
-        calories = Column(Integer, nullable=False)
+        weight = Column(Integer)
+        calories = Column(Integer)
+        steps = Column(Integer)
 
 class Hourly(Base):
         __tablename__ = "hourly"
@@ -40,6 +37,6 @@ class Hourly(Base):
         user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
         timestamp = Column(String, nullable = False)
         blood_sugar = Column(Integer, nullable=False)
-        symptoms = Column(String, nullable = False)
+        symptoms = Column(String)
         # 0 = before meal, 1 = after meal
         meal_status = Column(Integer, nullable = False)
