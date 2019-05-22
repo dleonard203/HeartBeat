@@ -3,6 +3,7 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly
 import json
+import datetime
 
 YELLOW = "#e0db41"
 GREEN = "#1f610b"
@@ -33,6 +34,7 @@ def weight_chart(sql_records):
 def blood_pies(sql_records):
     levels = blood_globals()
     pre_safe = pre_high = pre_low = post_high = post_low = post_safe = 0
+    colors = [RED, GREEN, YELLOW]
     for record in sql_records:
         val = record.blood_sugar
         #pre-meal
@@ -53,7 +55,6 @@ def blood_pies(sql_records):
                 post_safe += 1
     if pre_low + pre_high + pre_safe > 0:
         labels_low = [f"High (> {levels['max_pre']})", 'Normal', f"Low (< {levels['min_pre']})"]
-        colors = [RED, GREEN, YELLOW]
         trace_pre = go.Pie(labels=labels_low, values=[pre_high, pre_safe, pre_low], marker=dict(colors=colors), sort=False)
         layout = go.Layout(title="Blood Sugar (pre-meal)")
         fig = go.Figure(data=[trace_pre], layout=layout)
@@ -109,41 +110,45 @@ def determine_bar_colors(values, tpe):
 
 
 def generate_individual_bar(x, y, annotations, tpe, mn, mx):
+    dt_format = '%Y-%m-%d %H:%M:%S'
     if len(x) == 0:
         div = no_data(f"{tpe}-meal blood sugar bar chart")
     else:
         trace = go.Bar(x=x, y=y, text=annotations, marker=dict(color=determine_bar_colors(y, tpe)))
         layout = go.Layout(title=f"{tpe}-meal blood sugar".capitalize())
-        layout.update(dict(shapes = [
-            {'type': 'rect',
-            'xref': 'x',
-            'yref': 'y',
-            'x0': x[0],
-            'y0': mn,
-            'x1': x[len(x) - 1],
-            'y1': mn,
-            'fillcolor': RED,
-            'line': {'color': RED},
-            'opacity': 0.9},
-            {'type': 'rect',
-            'xref': 'x',
-            'yref': 'y',
-            'x0': x[0],
-            'y0': mx,
-            'x1': x[len(x) - 1],
-            'y1': mx,
-            'fillcolor': RED,
-            'line': {'color': RED},
-            'opacity': 0.9}
-        ]),
-        annotations=[go.Annotation(text=f"Lowest normal<br>{tpe}-meal blood sugar<br>({mn})", x=x[0], y=mn,
-        font=dict(color="#000000"), bgcolor='#ff7f0e'),
-        go.Annotation(text=f"Highest normal<br>{tpe}-meal blood sugar<br>({mx})", x=x[len(x) -1], y=mx,
-        font=dict(color="#000000"), bgcolor='#ff7f0e')]
-        )
+        x00_pt = str(datetime.datetime.strptime(x[0], dt_format) + datetime.timedelta(days=1))
+        x01_pt = str(datetime.datetime.strptime(x[len(x) - 1], dt_format) - datetime.timedelta(days=1))
+        if len(x) > 1:
+            layout.update(dict(shapes = [
+                {'type': 'rect',
+                'xref': 'x',
+                'yref': 'y',
+                'x0': x00_pt,
+                'y0': mn,
+                'x1': x01_pt,
+                'y1': mn,
+                'fillcolor': RED,
+                'line': {'color': RED},
+                'opacity': 0.9},
+                {'type': 'rect',
+                'xref': 'x',
+                'yref': 'y',
+                'x0': x00_pt,
+                'y0': mx,
+                'x1': x01_pt,
+                'y1': mx,
+                'fillcolor': RED,
+                'line': {'color': RED},
+                'opacity': 0.9}
+            ]),
+            annotations=[go.Annotation(text=f"Lowest normal<br>{tpe}-meal blood sugar<br>({mn})", x=x00_pt, y=mn,
+            font=dict(color="#000000"), bgcolor='#ff7f0e'),
+            go.Annotation(text=f"Highest normal<br>{tpe}-meal blood sugar<br>({mx})", x=x01_pt, y=mx,
+            font=dict(color="#000000"), bgcolor='#ff7f0e')]
+            )
         fig = go.Figure(data=[trace], layout=layout)
         div = plotly.offline.plot(fig, include_plotlyjs=False, output_type="div")
-        return div
+    return div
 
 
 
