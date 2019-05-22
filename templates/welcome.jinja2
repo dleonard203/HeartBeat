@@ -4,21 +4,44 @@
 {% block body %}
 
 <div class="container">
-    <h1>Welcome {{ username }}</h1>
-    <p>Seach for a book below</p>
+    <h1>Welcome, {{ username }}!</h1>
+    <p>What would you like to do?</p>
 </div>
-<div class="container search"> 
-    <form class="form-control col-5" method="post" action="/results">
-            
-            <label for="isbn">ISBN:</label>
-            <input type="text" placeholder="Enter an ISBN here" class="form-control" maxlength=10 name="isbn">
-            <label for="author">Author:</label>
-            <input type="text" placeholder="Enter an Author here" class="form-control" name="author">
-            <label for="title">Title:</label>
-            <input type="text" placeholder="Enter a Title here" class="form-control" name="title">
-            <button type="submit" class="btn btn-primary" action="/results" value="submit">Submit</button>
+
+
+<div class="container">
+    <form method="post">
+        <div class="d-flex justify-content-center btn-group">
+            <button name="submit_button" class="btn btn-primary" value="daily" id="sun">Post daily weight, calories, and steps</button>
+            <button name="submit_button" class="btn btn-primary" value="hourly">Post a blood sugar reading</button>
         </div>
+        <div class="d-flex justify-content-center btn-group" id="edit-btn">
+            <button class="btn btn-primary" name="submit_button" value="edit_data">Edit an old entry</button>
+            <button class="btn btn-primary" name="submit_button" value="more_data">Apply different filters to charts</button>
+        </div>
+
     </form>
+</div>
 
+<div class = "container recent-stats">
+    <h2>Your 30 day stats at a glance</h2>
+    <div class="row justify-content-between chart-row">
+        <div class="left-chart">
+        {{ pre_pie }}
+        </div>
+        <div class="right-chart">
+        {{ post_pie }}
+        </div>
+    </div>
 
+    {% for chart in [pre_bar, post_bar, weight] %}
+
+    <div class="row justify-content-between chart-row">
+        <div class="full-chart">
+            {{ chart }}
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
 {% endblock %}
