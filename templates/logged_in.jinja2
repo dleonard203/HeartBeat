@@ -7,17 +7,23 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/main.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/icon.png') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> 
     <title>HeartBeat</title>
 </head>
 
 
-<div class="top-nav d-flex justify-content-center">
-    <div class="row-4">
+<div class="top-nav d-flex bd-highlight mb-3 flex-wrap">
+    <div class="p-2 bd-highlight justify-content-center">
             <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo">
             Welcome to HeartBeat, your one stop shop for health monitoring
     </div>
-    <a id="logout" href="{{ url_for('logout') }}"><button class="btn btn-primary">Logout</a></button>
+    <div class="ml-auto p-2 bd-highlight">
+    <a id="home" href="{{ url_for('welcome') }}"><button class="btn btn-primary">Home</a></button>
+        <a id="logout" href="{{ url_for('logout') }}"><button class="btn btn-primary">Logout</a></button>
+    </div>
+
 </div>
+
 
 {% block header %}
 
