@@ -1,0 +1,41 @@
+  
+{% extends "logged_in.jinja2" %}
+
+{% block body %}
+
+<div class="container">
+
+    {% if records|length == 0 %}
+    <div class="container">
+        <h2>Sorry, no records to modify</h2>
+    </div>
+
+    {% endif %}
+
+    <div class="container">
+        <h3>{{ msg }}</h3>
+    </div>
+
+    {% for record in records %}
+    <div class="card edit-record">
+        <div class="card-header"><strong>Time:</strong> {{ record.timestamp }}</div>
+        <div class="card-body">
+            <p>Weight: {{ record.weight }}</p>
+            <p>Calories: {{ record.calories }}</p>
+            <p>Steps: {{ record.steps }}</p>
+            <div class="row justify-content-between">
+                <form method="post">
+                    <button class="btn btn-primary" type="submit" name="edit" value="{{ record.id }}">Edit Record</button>
+                </form>
+                <form method="post">
+                    <button class="btn btn-danger" name="delete" type="submit" value="{{ record.id }}">Delete Record</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    {% endfor %}
+</div>
+
+{% endblock %}
