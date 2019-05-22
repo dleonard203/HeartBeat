@@ -52,6 +52,25 @@ def create_account(username, password, email):
     db.commit()
 
 
+def delete_hourly_record(record_id, user_id):
+    obj = Hourly.query.filter(and_(Hourly.id == record_id, Hourly.user_id == user_id)).first()
+    if obj is None:
+        return f"Failed to find object with record id {record_id}"
+    else:
+        db.delete(obj)
+        db.commit()
+        return f"Successfully deleted record id {record_id}!"
+
+def delete_daily_record(record_id, user_id):
+    obj = Daily.query.filter(and_(Daily.id == record_id, Daily.user_id == user_id)).first()
+    if obj is None:
+        return f"Failed to find object with record id {record_id}"
+    else:
+        db.delete(obj)
+        db.commit()
+        return f"Successfully deleted record id {record_id}!"
+
+
 def type_or_none(val, cast):
     if val == '':
         return None
@@ -75,7 +94,7 @@ def is_time(t):
 def interpret_meal_status(s):
     return 0 if s == 'before' else 1
 
-def validate_daily_data(form, user_id):
+def validate_daily_data(form, user_id, make_record=True, check_exists=True):
     day = form.get('day')
     weight = form.get('weight')
     steps = form.get('steps')
@@ -83,7 +102,7 @@ def validate_daily_data(form, user_id):
     if not is_day(day):
         return f"Malformed date {day}"
 
-    if len(Daily.query.filter(Daily.timestamp == day).all()) > 0:
+    if len(Daily.query.filter(Daily.timestamp == day).all()) > 0 and check_exists:
         return f"Already have an entry for {day}. Please visit url /edit/daily/ to ammend this input."
 
     for val in [steps, weight, calories]:
@@ -92,10 +111,11 @@ def validate_daily_data(form, user_id):
         except:
             return f"Malformed integer {val}"
     # data checked out
-    d = Daily(user_id = user_id, timestamp = day, steps = type_or_none(steps, int), 
-                calories = type_or_none(calories, int), weight = type_or_none(weight, int))
-    db.add(d)
-    db.commit()
+    if make_record:
+        d = Daily(user_id = user_id, timestamp = day, steps = type_or_none(steps, int), 
+                    calories = type_or_none(calories, int), weight = type_or_none(weight, int))
+        db.add(d)
+        db.commit()
 
 def validate_hourly_data(form, user_id, make_record=True, check_exists=True):
     day = form.get('day')
@@ -161,3 +181,21 @@ def handle_hourly_record_update(form, user_id, hourly_record_id):
         return change_log
 
 
+def handle_daily_record_update(form, user_id, daily_record_id):
+    valid_data = validate_daily_data(form, user_id, make_record=False, check_exists=False)
+    record = Daily.query.filter(and_(Daily.id == daily_record_id, Daily.user_id == user_id)).first()
+    if isinstance(valid_data, str):
+        return valid_data
+    record = Daily.query.filter(and_(Daily.id == daily_record_id, Daily.user_id == user_id)).first()
+    record.timestamp = form.get('day')
+    db.commit()
+    record = Daily.query.filter(and_(Daily.id == daily_record_id, Daily.user_id == user_id)).first()
+    record.weight = type_or_none(form.get('weight'), int)
+    db.commit()
+    record = Daily.query.filter(and_(Daily.id == daily_record_id, Daily.user_id == user_id)).first()
+    record.steps = type_or_none(form.get('steps'), int)
+    db.commit()
+    record = Daily.query.filter(and_(Daily.id == daily_record_id, Daily.user_id == user_id)).first()
+    record.calories = type_or_none(form.get('calories'), int)
+    db.commit()
+    return {}
