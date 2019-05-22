@@ -4,6 +4,18 @@
 {% block body %}
 
 <div class="container">
+
+    {% if records|length == 0 %}
+    <div class="container">
+        <h2>Sorry, no records to modify</h2>
+    </div>
+
+    {% endif %}
+
+    <div class="container">
+        <h3>{{ msg }}</h3>
+    </div>
+
     {% for record in records %}
     <div class="card edit-record">
         <div class="card-header"><strong>Time:</strong> {{ record.timestamp }}</div>
